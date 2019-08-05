@@ -1,14 +1,21 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
-    <div v-html="msg2"></div>
 <!--    <h1 v-text="msg"></h1>-->
 <!--    v-text 会覆盖原本内容，并产生闪烁，而插值表达式会闪烁-->
 
 <!--    v-bind是绑定属性函数，v-bind中可以写js表达式-->
-    <input type="button" value="浪起来" @click="moveWords">
-    <input type="button" value="别浪" @click="stopMoveWords">
-    <div>{{ msg3 }}</div>
+
+    <input type="text" v-model="num1">
+    <select v-model="optionType">
+      <option value="+">+加</option>
+      <option value="-">-减</option>
+      <option value="*">*乘</option>
+      <option value="/">/除</option>
+    </select>
+    <input type="text" v-model="num2">
+    <input type="button" value="计算的结果是=" v-on:click="getResult">
+    <input type="text" v-model="countResult">
 
   </div>
 </template>
@@ -18,23 +25,33 @@ export default {
   name: 'HelloWorld',
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App',
-      msg2: '<h2>你好我是h2</h2>',
-      msg3: '猥琐发育，别浪~~!',
-      intervalId: null
+      msg: '一个简单的计算器',
+      num1: null,
+      num2: null,
+      optionType: '+',
+      countResult: null
     }
   },
   methods:{
-    moveWords() {
-      if(this.intervalId === null){
-        this.intervalId = setInterval(() => {
-          this.msg3 = this.msg3.substring(1) + this.msg3.substring(0,1);
-        },100)
+    getResult(){
+      if ((this.num1 === null) || (this.num2 === null)){
+        alert('请输入需要计算的数字！')
+      } else {
+        switch (this.optionType) {
+          case '+':
+            this.countResult = Number(this.num1) + Number(this.num2);
+            break;
+          case '-':
+            this.countResult = Number(this.num1) - Number(this.num2);
+            break;
+          case '*':
+            this.countResult = Number(this.num1) * Number(this.num2);
+            break;
+          case '/':
+            this.countResult = Number(this.num1) / Number(this.num2);
+            break;
+        }
       }
-    },
-    stopMoveWords() {
-      clearInterval(this.intervalId);
-      this.intervalId =null;
     }
   }
 }
